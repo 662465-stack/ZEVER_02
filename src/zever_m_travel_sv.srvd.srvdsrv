@@ -1,0 +1,5 @@
+@EndUserText.label: 'Travel Service Definition'
+define service ZEVER_M_TRAVEL_SV {
+  expose ZEVER_M_TRAVEL_P;
+  expose ZEVER_M_BOOKING_P;
+}

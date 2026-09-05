@@ -1,0 +1,81 @@
+@Metadata.layer: #CUSTOMER
+@Search.searchable: true
+@UI.headerInfo: {
+    typeName: 'Travel Detail',
+    typeNamePlural: 'Results',
+    title: {
+        type: #STANDARD,
+        value: 'TravelId'
+    }
+}
+annotate entity ZEVER_M_TRAVEL_P with
+{
+  @UI.facet: [{
+      id: 'Travel',
+      purpose: #STANDARD,
+      position: 10,
+      label: 'Travel',
+      type: #IDENTIFICATION_REFERENCE
+  },
+  {
+      id: 'Booking',
+      purpose: #STANDARD,
+      position: 20,
+      label: 'Booking',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_BOOKING'
+  }]
+
+  @UI.lineItem: [{ position: 10 },
+                 { type: #FOR_ACTION, dataAction: 'setBooked',   label: 'set Booked',   position: 10 },
+                 { type: #FOR_ACTION, dataAction: 'setDiscount', label: 'Discount 10%', position: 20 },
+                 { type: #FOR_ACTION, dataAction: 'lineCopy',    label: 'Copy',         position: 30 } ]
+  @UI.identification: [{ position: 10 }]
+  @UI.selectionField: [{ position: 10 }]
+  @Search.defaultSearchElement: true
+  TravelId;
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  @UI.selectionField: [{ position: 20 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_AGENCY',
+                                                 element: 'AgencyID' } }]
+  AgencyId;
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.8
+  AgencyName;
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  @UI.selectionField: [{ position: 30 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CUSTOMER',
+                                                 element: 'CustomerID' } }]
+  CustomerId;
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.8
+  CustomerName;
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  @UI.selectionField: [{ position: 40 }]
+  @Consumption.filter.selectionType: #INTERVAL
+  BeginDate;
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  @UI.selectionField: [{ position: 50 }]
+  @Consumption.filter.selectionType: #INTERVAL
+  EndDate;
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  BookingFee;
+  @UI.lineItem: [{ position: 70 }]
+  @UI.identification: [{ position: 70 }]
+  TotalPrice;
+  @UI.lineItem: [{ position: 80 }]
+  @UI.identification: [{ position: 80 }]
+  @UI.selectionField: [{ position: 60 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_TRAVEL_STATUS_VH',
+                                                 element: 'TravelStatus' } }]
+  Status;
+
+}

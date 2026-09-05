@@ -1,0 +1,57 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+    typeName: 'Booking Detail',
+    title: {
+        type: #STANDARD,
+        value: 'BookingId'
+    }
+}
+@Search.searchable: true
+annotate entity ZEVER_M_BOOKING_P with
+{
+  @UI.facet: [{ id: 'Booking',
+                purpose: #STANDARD,
+                position: 10,
+                label: '',
+                type: #IDENTIFICATION_REFERENCE
+  }]
+
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  TravelId;
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  @Search.defaultSearchElement: true
+  BookingId;
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  @Search.defaultSearchElement: true
+  BookingDate;
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CUSTOMER_STDVH',
+                                                 element: 'CustomerID' } }]
+  CustomerId;
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CARRIER',
+                                                 element: 'AirlineID' } }]
+  CarrierId;
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CONNECTION',
+                                                 element: 'ConnectionID' },
+                                       additionalBinding: [{ localElement: 'CarrierId',
+                                                             element: 'AirlineID' }] }]
+  ConnectionId;
+  @UI.lineItem: [{ position: 70 }]
+  @UI.identification: [{ position: 70 }]
+  @Search.defaultSearchElement: true
+  FlightDate;
+  @UI.lineItem: [{ position: 80 }]
+  @UI.identification: [{ position: 80 }]
+  FlightPrice;
+}

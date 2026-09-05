@@ -1,0 +1,5 @@
+CLASS zbp_ever_m_travel_i DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zever_m_travel_i.
+ENDCLASS.
+
+CLASS zbp_ever_m_travel_i IMPLEMENTATION.
+ENDCLASS.

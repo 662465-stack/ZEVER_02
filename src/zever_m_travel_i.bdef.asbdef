@@ -1,0 +1,96 @@
+managed with additional save implementation in class zbp_ever_m_travel_i unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZEVER_M_TRAVEL_I //alias <alias_name>
+persistent table /dmo/travel
+draft table zever_travel_d
+lock master total etag Lastchangedat
+authorization master ( instance )
+//etag master <field_name>
+early numbering
+{
+  create ( authorization : global );
+  update;
+  delete ( features : instance );
+  field ( readonly ) TravelId;
+  //field ( readonly : update ) Status;
+  field ( mandatory ) CustomerId, AgencyId;
+  association _BOOKING { create; with draft; }
+
+  validation validateCustomer on save { create; field CustomerId; }
+  validation validateAgency on save { create; field AgencyId; }
+
+  determination calculateTotalPrice on modify { field BookingFee; }
+
+  side effects { field BookingFee affects field TotalPrice; }
+
+  action setBooked result[1] $self;
+  static action setDiscount result[0..*] $self;
+  factory action ( features : instance ) lineCopy [1];
+  internal action recalcTotPrice;
+
+  draft action Resume with additional implementation;
+  draft action Edit with additional implementation;
+  draft action Activate optimized with additional implementation;
+  draft action Discard with additional implementation;
+
+  draft determine action Prepare
+  {
+    validation validateCustomer;
+    validation validateAgency;
+    validation ZEVER_M_BOOKING_I~validateCustomer;
+  }
+
+  mapping for /dmo/travel
+    {
+      TravelId      = travel_id;
+      AgencyId      = agency_id;
+      CustomerId    = customer_id;
+      BeginDate     = begin_date;
+      EndDate       = end_date;
+      BookingFee    = booking_fee;
+      TotalPrice    = total_price;
+      CurrencyCode  = currency_code;
+      Description   = description;
+      Status        = status;
+      Createdby     = createdby;
+      Createdat     = createdat;
+      Lastchangedby = lastchangedby;
+      Lastchangedat = lastchangedat;
+    }
+}
+
+define behavior for ZEVER_M_BOOKING_I //alias <alias_name>
+with unmanaged save
+//persistent table /dmo/booking
+draft table zever_booking_d
+lock dependent by _TRAVEL
+authorization dependent by _TRAVEL
+//etag master <field_name>
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) TravelId, BookingId;
+  association _TRAVEL { with draft; }
+
+  validation validateCustomer on save { create; field CustomerId; }
+
+  determination calculateTotalPrice on modify { field FlightPrice; }
+
+  side effects { field FlightPrice affects field _TRAVEL.TotalPrice; }
+
+  mapping for /dmo/booking
+    {
+      TravelId     = travel_id;
+      BookingId    = booking_id;
+      BookingDate  = booking_date;
+      CustomerId   = customer_id;
+      CarrierId    = carrier_id;
+      ConnectionId = connection_id;
+      FlightDate   = flight_date;
+      FlightPrice  = flight_price;
+      CurrencyCode = currency_code;
+    }
+}
