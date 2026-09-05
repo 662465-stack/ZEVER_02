@@ -224,6 +224,7 @@ CLASS lsc_zever_m_travel_i IMPLEMENTATION.
 *        et_messages           =
       .
 
+*    call FUNCTION 'bapi_flight_getlist'.
 
 
   ENDMETHOD.
